@@ -1399,6 +1399,54 @@ export default function Index() {
               </div>
             </Reveal>
 
+            {/* ── Инна Петухова ── */}
+            <Reveal delay={0.15}>
+              <div
+                className="rounded-3xl border p-8 md:p-12"
+                style={{
+                  background: "rgba(45,0,75,0.3)",
+                  borderColor: "rgba(157,78,221,0.25)",
+                  boxShadow: "0 0 80px rgba(157,78,221,0.1)",
+                }}
+              >
+                <div className="flex flex-col md:flex-row gap-10 items-start">
+                  <div className="flex-shrink-0 flex flex-col items-center gap-4">
+                    <div className="w-48 h-48 rounded-2xl overflow-hidden" style={{ boxShadow: "0 0 40px rgba(157,78,221,0.4)" }}>
+                      <img src="https://cdn.poehali.dev/projects/d4af42ec-5015-483c-b71c-6bf32723c131/bucket/3c31a22f-e25a-4095-b52f-743990fba8f0.png" alt="Инна Петухова" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="text-center">
+                      <h3 className="font-oswald text-xl font-bold uppercase">ИННА ПЕТУХОВА</h3>
+                      <p className="text-xs text-white/50 mt-1 font-golos leading-snug max-w-[180px]">Генеральный директор Auto Business Consulting</p>
+                    </div>
+                  </div>
+                  <div className="flex-1 flex flex-col gap-6 justify-center">
+                    <div
+                      className="p-6 rounded-2xl"
+                      style={{ background: "rgba(157,78,221,0.08)", border: "1px solid rgba(157,78,221,0.2)" }}
+                    >
+                      <p className="font-golos text-base text-white/80 leading-relaxed">
+                        Инна Петухова — основатель и генеральный директор Auto Business Consulting. Эксперт в области стратегического развития автобизнеса, организации конференций и внедрения ИИ-решений в автомобильной индустрии.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-3">
+                      <a href="mailto:Inna.Petuhova@autobisconsult.ru" className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-golos text-sm transition-all hover:scale-105" style={{ background: "rgba(157,78,221,0.12)", border: "1px solid rgba(157,78,221,0.3)", color: "#9D4EDD" }}>
+                        <Icon name="Mail" size={15} />
+                        Inna.Petuhova@autobisconsult.ru
+                      </a>
+                      <a href="tel:+79852320005" className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-golos text-sm transition-all hover:scale-105" style={{ background: "rgba(157,78,221,0.12)", border: "1px solid rgba(157,78,221,0.3)", color: "#9D4EDD" }}>
+                        <Icon name="Phone" size={15} />
+                        +7 985 232-00-05
+                      </a>
+                      <a href="https://t.me/abc_cons" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-golos text-sm transition-all hover:scale-105" style={{ background: "rgba(157,78,221,0.12)", border: "1px solid rgba(157,78,221,0.3)", color: "#9D4EDD" }}>
+                        <Icon name="Send" size={15} />
+                        @abc_cons
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
           </div>
         </div>
       </section>
