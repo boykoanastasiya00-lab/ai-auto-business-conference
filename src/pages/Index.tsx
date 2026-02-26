@@ -217,49 +217,40 @@ const TICKETS = [
 
 const PARTNER_PACKAGES = [
   {
-    title: "Генеральный партнёр",
-    price: "от 500 000 ₽",
+    title: "Платиновый партнёр",
+    slots: "1 место",
+    price: "По запросу",
     color: "#FF00FF",
+    glow: true,
     perks: [
-      "Логотип на всех носителях",
-      "Стенд 6x3 м в главной зоне",
-      "10 билетов для сотрудников",
-      "Выступление спикера (30 мин)",
-      "Интеграция в онлайн-трансляцию",
-      "Именной welcome-пакет участников",
+      "30 минут на выступление в основной программе",
+      "Логотип на всех носителях и баннер в зале",
+      "Брендирование одного из кофе-брейков",
+      "5 билетов для ваших клиентов",
+      "Пост в соцсетях с упоминанием",
     ],
   },
   {
-    title: "Стратегический партнёр",
-    price: "от 250 000 ₽",
-    color: "#9D4EDD",
+    title: "Золотой партнёр",
+    slots: "2 места",
+    price: "По запросу",
+    color: "#FFD700",
+    glow: false,
     perks: [
-      "Логотип на ключевых носителях",
-      "Стенд 4x2 м",
-      "6 билетов для сотрудников",
-      "Размещение материалов",
-      "Упоминание в анонсах",
+      "15 минут на выступление",
+      "Логотип на сайте и в программе",
+      "3 билета для ваших клиентов",
     ],
   },
   {
-    title: "Официальный партнёр",
-    price: "от 100 000 ₽",
-    color: "#7B2FBE",
+    title: "Серебряный партнёр",
+    slots: "Без ограничений",
+    price: "По запросу",
+    color: "#C0C0C0",
+    glow: false,
     perks: [
-      "Логотип на сайте и программе",
-      "Стол 2x1 м",
-      "3 билета для сотрудников",
-      "Раздаточные материалы",
-    ],
-  },
-  {
-    title: "Информационный партнёр",
-    price: "Медиа / бартер",
-    color: "#5A1F8E",
-    perks: [
-      "Логотип на сайте",
-      "2 билета",
-      "Взаимный пиар",
+      "Логотип на сайте и в программе",
+      "1 билет для вашего представителя",
     ],
   },
 ];
@@ -389,8 +380,10 @@ export default function Index() {
   const [scrolled, setScrolled] = useState(false);
   const [speakerFormData, setSpeakerFormData] = useState({ name: "", company: "", role: "", topic: "", description: "", link: "", email: "" });
   const [partnerFormData, setPartnerFormData] = useState({ company: "", name: "", role: "", package: "", email: "", phone: "" });
+  const [contactFormData, setContactFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [speakerSent, setSpeakerSent] = useState(false);
   const [partnerSent, setPartnerSent] = useState(false);
+  const [contactSent, setContactSent] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -1063,62 +1056,108 @@ export default function Index() {
       <section id="for-partners" className="py-24 bg-[#0D0015]">
         <div className="max-w-6xl mx-auto px-6">
           <Reveal>
-            <div className="text-center mb-16">
+            <div className="text-center mb-6">
               <span className="text-[#FF00FF] font-oswald tracking-widest text-sm uppercase">Партнёрство</span>
               <h2 className="font-oswald text-4xl md:text-5xl font-bold mt-3 uppercase">
                 Станьте партнёром <span style={{ color: "#9D4EDD" }}>конференции</span>
               </h2>
-              <p className="text-white/60 max-w-2xl mx-auto mt-4">
-                500+ топ-менеджеров автомобильной отрасли — ваша аудитория на один день. Выберите пакет или обсудим индивидуальные условия.
+              <p className="text-white/60 max-w-2xl mx-auto mt-4 text-lg">
+                Достигните топ-менеджмента крупнейших автомобильных компаний России.
+                <br />Аудитория конференции — <span className="text-[#FF00FF] font-semibold">300+ лиц, принимающих решения</span>.
               </p>
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
+          {/* Sponsor packages */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 mt-12">
             {PARTNER_PACKAGES.map((pkg, i) => (
               <Reveal key={pkg.title} delay={i * 0.1}>
                 <div
-                  className="rounded-2xl border p-6 h-full flex flex-col transition-all duration-300 hover:scale-[1.03]"
+                  className="relative rounded-2xl border p-8 h-full flex flex-col transition-all duration-300 hover:scale-[1.03]"
                   style={{
-                    background: "rgba(45,0,75,0.3)",
-                    borderColor: `${pkg.color}40`,
-                    boxShadow: i === 0 ? `0 0 30px ${pkg.color}20` : "none",
+                    background: pkg.glow
+                      ? "linear-gradient(135deg, rgba(255,0,255,0.08), rgba(45,0,75,0.6))"
+                      : "rgba(45,0,75,0.3)",
+                    borderColor: `${pkg.color}50`,
+                    boxShadow: pkg.glow ? `0 0 50px ${pkg.color}25` : "none",
                   }}
                 >
-                  <div className="w-3 h-3 rounded-full mb-4" style={{ background: pkg.color }} />
-                  <h3 className="font-oswald text-lg font-bold mb-1">{pkg.title}</h3>
-                  <p className="font-oswald text-2xl font-bold mb-5" style={{ color: pkg.color }}>{pkg.price}</p>
-                  <ul className="space-y-2 flex-1">
+                  {pkg.glow && (
+                    <div
+                      className="absolute -top-px left-0 right-0 h-0.5 rounded-t-2xl"
+                      style={{ background: `linear-gradient(90deg, transparent, ${pkg.color}, transparent)` }}
+                    />
+                  )}
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h3 className="font-oswald text-xl font-bold" style={{ color: pkg.color }}>{pkg.title}</h3>
+                      <span className="text-white/40 text-xs">{pkg.slots}</span>
+                    </div>
+                    <span
+                      className="px-4 py-1 rounded-full text-sm font-oswald font-semibold"
+                      style={{ background: `${pkg.color}20`, color: pkg.color, border: `1px solid ${pkg.color}40` }}
+                    >
+                      {pkg.price}
+                    </span>
+                  </div>
+                  <ul className="space-y-3 flex-1">
                     {pkg.perks.map((perk) => (
-                      <li key={perk} className="flex items-start gap-2 text-sm text-white/60">
-                        <Icon name="Check" size={13} style={{ color: pkg.color, marginTop: "3px", flexShrink: 0 }} />
+                      <li key={perk} className="flex items-start gap-3 text-sm text-white/70">
+                        <Icon name="Check" size={14} style={{ color: pkg.color, marginTop: "3px", flexShrink: 0 }} />
                         <span>{perk}</span>
                       </li>
                     ))}
                   </ul>
                   <button
                     onClick={() => scrollTo("#contacts")}
-                    className="mt-6 w-full py-3 font-oswald text-sm font-semibold tracking-wider rounded-full border transition-all duration-200 hover:scale-105"
-                    style={{ borderColor: `${pkg.color}60`, color: pkg.color }}
+                    className="mt-8 w-full py-3 font-oswald text-sm font-semibold tracking-wider rounded-full border transition-all duration-200 hover:scale-105"
+                    style={{
+                      borderColor: `${pkg.color}60`,
+                      color: pkg.color,
+                      background: pkg.glow ? `${pkg.color}10` : "transparent",
+                    }}
                   >
-                    Обсудить
+                    Обсудить условия
                   </button>
                 </div>
               </Reveal>
             ))}
           </div>
 
+          {/* Download mediakit */}
+          <Reveal>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
+              <a
+                href="#"
+                className="inline-flex items-center gap-3 px-8 py-4 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "linear-gradient(135deg, #9D4EDD, #FF00FF)",
+                  boxShadow: "0 0 30px rgba(255,0,255,0.25)",
+                }}
+              >
+                <Icon name="Download" size={18} />
+                СКАЧАТЬ МЕДИАКИТ (PDF)
+              </a>
+              <p className="text-white/40 text-sm">Подробные условия, аудитория, форматы размещения</p>
+            </div>
+          </Reveal>
+
           {/* Partner inquiry form */}
           <Reveal>
             <div className="rounded-2xl border p-8" style={{ background: "rgba(45,0,75,0.2)", borderColor: "rgba(157,78,221,0.2)" }}>
-              <h3 className="font-oswald text-2xl font-bold mb-2">Заявка на партнёрство</h3>
-              <p className="text-white/50 mb-6 text-sm">Оставьте контакты — пришлём полный медиакит с условиями</p>
+              <h3 className="font-oswald text-2xl font-bold mb-1">Заявка на партнёрство</h3>
+              <p className="text-white/50 mb-6 text-sm">Оставьте контакты — ответим в течение 24 часов</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-white/50 mb-6">
+                <span>Контакт для партнёров: <span className="text-[#9D4EDD]">[Имя]</span></span>
+                <span>Телефон: <span className="text-[#9D4EDD]">[номер]</span></span>
+                <span>Email: <a href="mailto:partners@aiauto2026.ru" className="text-[#9D4EDD] hover:text-[#FF00FF] transition-colors">partners@aiauto2026.ru</a></span>
+              </div>
 
               {partnerSent ? (
-                <div className="text-center py-8">
-                  <Icon name="CheckCircle" size={48} className="mx-auto mb-4" style={{ color: "#9D4EDD" }} />
+                <div className="text-center py-10">
+                  <Icon name="CheckCircle" size={52} className="mx-auto mb-4" style={{ color: "#9D4EDD" }} />
                   <h3 className="font-oswald text-2xl font-bold mb-2">Заявка получена!</h3>
-                  <p className="text-white/60">Вышлем медиакит в течение 24 часов.</p>
+                  <p className="text-white/60">Вышлем медиакит и позвоним в течение 24 часов.</p>
                 </div>
               ) : (
                 <form
@@ -1131,7 +1170,7 @@ export default function Index() {
                     { key: "role", label: "Должность", placeholder: "Директор по маркетингу" },
                     { key: "email", label: "Email", placeholder: "marketing@company.ru" },
                     { key: "phone", label: "Телефон", placeholder: "+7 (xxx) xxx-xx-xx" },
-                    { key: "package", label: "Интересующий пакет", placeholder: "Генеральный / Стратегический / ..." },
+                    { key: "package", label: "Интересующий пакет", placeholder: "Платиновый / Золотой / Серебряный" },
                   ].map((field) => (
                     <div key={field.key}>
                       <label className="block text-sm text-white/50 mb-2">{field.label}</label>
@@ -1151,7 +1190,7 @@ export default function Index() {
                       className="px-10 py-4 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-105"
                       style={{ background: "linear-gradient(135deg, #9D4EDD, #FF00FF)", boxShadow: "0 0 30px rgba(255,0,255,0.2)" }}
                     >
-                      ПОЛУЧИТЬ МЕДИАКИТ
+                      ОТПРАВИТЬ ЗАЯВКУ
                     </button>
                   </div>
                 </form>
@@ -1161,58 +1200,151 @@ export default function Index() {
         </div>
       </section>
 
-      {/* ── PARTNERS LOGO SECTION ── */}
-      <section id="partners" className="py-16" style={{ background: "#16213E" }}>
-        <div className="max-w-6xl mx-auto px-6 text-center">
+      {/* ── BLOCK 8: CONTACTS & ORGANIZERS ── */}
+      <section id="contacts" className="py-24" style={{ background: "#16213E" }}>
+        <div className="max-w-6xl mx-auto px-6">
           <Reveal>
-            <p className="text-white/30 text-sm font-oswald tracking-widest uppercase mb-8">Партнёры конференции</p>
-            <div className="flex flex-wrap items-center justify-center gap-8 opacity-30">
-              {["ПАРТНЁР 1", "ПАРТНЁР 2", "ПАРТНЁР 3", "ПАРТНЁР 4", "ПАРТНЁР 5"].map((p) => (
-                <div key={p} className="border border-white/20 rounded-lg px-8 py-4">
-                  <span className="font-oswald text-sm tracking-widest text-white">{p}</span>
-                </div>
-              ))}
+            <div className="text-center mb-16">
+              <span className="text-[#FF00FF] font-oswald tracking-widest text-sm uppercase">Оргкомитет</span>
+              <h2 className="font-oswald text-4xl md:text-5xl font-bold mt-3 uppercase">
+                Организационный <span style={{ color: "#9D4EDD" }}>комитет</span>
+              </h2>
             </div>
           </Reveal>
-        </div>
-      </section>
 
-      {/* ── CONTACTS ── */}
-      <section id="contacts" className="py-24 bg-[#0D0015]">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <Reveal>
-            <h2 className="font-oswald text-4xl md:text-5xl font-bold mb-4 uppercase">
-              Контакты
-            </h2>
-            <p className="text-white/50 mb-12">Остались вопросы? Мы на связи.</p>
-          </Reveal>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            {/* Contact info */}
+            <Reveal>
+              <div className="space-y-6">
+                <h3 className="font-oswald text-2xl font-semibold mb-6">Контакты</h3>
 
-          <Reveal>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
-              {[
-                { icon: "Mail", label: "Email", value: "info@aiauto2026.ru", href: "mailto:info@aiauto2026.ru" },
-                { icon: "Send", label: "Telegram", value: "@aiauto2026", href: "https://t.me/+QgiLIa1gFRY4Y2Iy" },
-                { icon: "MapPin", label: "Место", value: "Москва, уточняется", href: "#" },
-              ].map((c) => (
-                <a
-                  key={c.label}
-                  href={c.href}
-                  target={c.href.startsWith("http") ? "_blank" : undefined}
-                  rel="noreferrer"
-                  className="p-6 rounded-2xl border flex flex-col items-center gap-3 transition-all duration-300 hover:scale-105 hover:border-[#FF00FF]/50"
-                  style={{ background: "rgba(45,0,75,0.3)", borderColor: "rgba(157,78,221,0.2)" }}
+                {[
+                  { icon: "Mail", label: "Общие вопросы", value: "info@aiauto2026.ru", href: "mailto:info@aiauto2026.ru" },
+                  { icon: "Mic", label: "Для спикеров", value: "speakers@aiauto2026.ru", href: "mailto:speakers@aiauto2026.ru" },
+                  { icon: "Handshake", label: "Для партнёров", value: "partners@aiauto2026.ru", href: "mailto:partners@aiauto2026.ru" },
+                  { icon: "Phone", label: "Телефон (10:00–19:00)", value: "[номер телефона]", href: "tel:+7" },
+                ].map((c) => (
+                  <a
+                    key={c.label}
+                    href={c.href}
+                    className="flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 hover:border-[#9D4EDD]/50 hover:scale-[1.02] group"
+                    style={{ background: "rgba(45,0,75,0.3)", borderColor: "rgba(157,78,221,0.15)" }}
+                  >
+                    <div
+                      className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: "rgba(157,78,221,0.15)" }}
+                    >
+                      <Icon name={c.icon} size={18} style={{ color: "#9D4EDD" }} />
+                    </div>
+                    <div>
+                      <p className="text-white/40 text-xs mb-0.5">{c.label}</p>
+                      <p className="font-golos font-medium text-sm group-hover:text-[#FF00FF] transition-colors">{c.value}</p>
+                    </div>
+                  </a>
+                ))}
+
+                {/* Organizer block */}
+                <div
+                  className="mt-8 p-6 rounded-xl border"
+                  style={{ background: "rgba(45,0,75,0.2)", borderColor: "rgba(157,78,221,0.15)" }}
                 >
-                  <Icon name={c.icon} size={28} style={{ color: "#9D4EDD" }} />
-                  <p className="text-white/40 text-xs">{c.label}</p>
-                  <p className="font-oswald font-semibold text-sm">{c.value}</p>
-                </a>
-              ))}
-            </div>
-          </Reveal>
+                  <p className="text-white/40 text-xs mb-3 uppercase tracking-widest">Организатор</p>
+                  <div className="flex items-center gap-4">
+                    <div
+                      className="w-14 h-14 rounded-xl flex items-center justify-center"
+                      style={{ background: "rgba(157,78,221,0.1)", border: "1px solid rgba(157,78,221,0.3)" }}
+                    >
+                      <Icon name="Building2" size={24} style={{ color: "#9D4EDD" }} />
+                    </div>
+                    <div>
+                      <p className="font-oswald text-lg font-bold">[Название агентства]</p>
+                      <a href="#" className="text-[#9D4EDD] text-sm hover:text-[#FF00FF] transition-colors">Перейти на сайт →</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
 
+            {/* Contact form */}
+            <Reveal delay={0.15}>
+              <div className="rounded-2xl border p-8" style={{ background: "rgba(45,0,75,0.3)", borderColor: "rgba(157,78,221,0.2)" }}>
+                <h3 className="font-oswald text-2xl font-semibold mb-6">Форма обратной связи</h3>
+
+                {contactSent ? (
+                  <div className="text-center py-12">
+                    <Icon name="CheckCircle" size={52} className="mx-auto mb-4" style={{ color: "#9D4EDD" }} />
+                    <h3 className="font-oswald text-2xl font-bold mb-2">Сообщение отправлено!</h3>
+                    <p className="text-white/60">Ответим в ближайшее время.</p>
+                  </div>
+                ) : (
+                  <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setContactSent(true); }}>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm text-white/50 mb-2">Имя</label>
+                        <input
+                          type="text"
+                          placeholder="Иван Петров"
+                          value={contactFormData.name}
+                          onChange={(e) => setContactFormData({ ...contactFormData, name: e.target.value })}
+                          className="w-full bg-[#0D0015]/60 border rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition-colors focus:border-[#9D4EDD]"
+                          style={{ borderColor: "rgba(157,78,221,0.2)" }}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm text-white/50 mb-2">Email</label>
+                        <input
+                          type="email"
+                          placeholder="ivan@company.ru"
+                          value={contactFormData.email}
+                          onChange={(e) => setContactFormData({ ...contactFormData, email: e.target.value })}
+                          className="w-full bg-[#0D0015]/60 border rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition-colors focus:border-[#9D4EDD]"
+                          style={{ borderColor: "rgba(157,78,221,0.2)" }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-white/50 mb-2">Тема</label>
+                      <select
+                        value={contactFormData.subject}
+                        onChange={(e) => setContactFormData({ ...contactFormData, subject: e.target.value })}
+                        className="w-full bg-[#0D0015] border rounded-xl px-4 py-3 text-sm text-white outline-none transition-colors focus:border-[#9D4EDD] appearance-none"
+                        style={{ borderColor: "rgba(157,78,221,0.2)" }}
+                      >
+                        <option value="" style={{ background: "#0D0015" }}>Выберите тему</option>
+                        <option value="tickets" style={{ background: "#0D0015" }}>Вопрос о билетах</option>
+                        <option value="speaker" style={{ background: "#0D0015" }}>Предложение стать спикером</option>
+                        <option value="partner" style={{ background: "#0D0015" }}>Предложение о партнёрстве</option>
+                        <option value="other" style={{ background: "#0D0015" }}>Другое</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-white/50 mb-2">Сообщение</label>
+                      <textarea
+                        rows={4}
+                        placeholder="Ваш вопрос или сообщение..."
+                        value={contactFormData.message}
+                        onChange={(e) => setContactFormData({ ...contactFormData, message: e.target.value })}
+                        className="w-full bg-[#0D0015]/60 border rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition-colors focus:border-[#9D4EDD] resize-none"
+                        style={{ borderColor: "rgba(157,78,221,0.2)" }}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full py-4 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-[1.02]"
+                      style={{ background: "linear-gradient(135deg, #9D4EDD, #FF00FF)", boxShadow: "0 0 30px rgba(255,0,255,0.2)" }}
+                    >
+                      ОТПРАВИТЬ
+                    </button>
+                  </form>
+                )}
+              </div>
+            </Reveal>
+          </div>
+
+          {/* CTA banner */}
           <Reveal>
             <div
-              className="p-10 rounded-3xl text-center"
+              className="mt-16 p-10 rounded-3xl text-center"
               style={{
                 background: "linear-gradient(135deg, rgba(157,78,221,0.15), rgba(255,0,255,0.05))",
                 border: "1px solid rgba(255,0,255,0.2)",
@@ -1240,22 +1372,96 @@ export default function Index() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="py-8 border-t" style={{ borderColor: "rgba(157,78,221,0.15)", background: "#0D0015" }}>
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <span className="font-oswald text-lg font-bold tracking-widest" style={{ textShadow: "0 0 20px rgba(255,0,255,0.3)" }}>
-            ИИ В АВТО <span style={{ color: "#FF00FF" }}>2.0</span>
-          </span>
-          <p className="text-white/25 text-sm">© 2026 Конференция по ИИ в автобизнесе. Все права защищены.</p>
-          <div className="flex gap-4">
-            {NAV_LINKS.slice(0, 4).map((link) => (
-              <button
-                key={link.href}
-                onClick={() => scrollTo(link.href)}
-                className="text-xs text-white/30 hover:text-white/60 transition-colors"
+      <footer className="py-12 border-t" style={{ borderColor: "rgba(157,78,221,0.15)", background: "#0D0015" }}>
+        <div className="max-w-6xl mx-auto px-6">
+          {/* Top row */}
+          <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-10">
+            <div>
+              <div className="font-oswald text-2xl font-bold tracking-widest mb-3" style={{ textShadow: "0 0 20px rgba(255,0,255,0.3)" }}>
+                ИИ В АВТО <span style={{ color: "#FF00FF" }}>2.0</span>
+              </div>
+              <p className="text-white/30 text-sm max-w-xs leading-relaxed">
+                Конференция по внедрению ИИ в бизнес-процессы автомобильных компаний. 2 апреля 2026, Москва.
+              </p>
+              {/* Organizer logo */}
+              <div className="mt-4 flex items-center gap-3">
+                <div
+                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  style={{ background: "rgba(157,78,221,0.15)", border: "1px solid rgba(157,78,221,0.3)" }}
+                >
+                  <Icon name="Building2" size={14} style={{ color: "#9D4EDD" }} />
+                </div>
+                <span className="text-white/30 text-xs">[Название агентства]</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
+              <div>
+                <p className="font-oswald text-xs tracking-widest text-white/30 uppercase mb-4">Навигация</p>
+                <ul className="space-y-2">
+                  {NAV_LINKS.map((link) => (
+                    <li key={link.href}>
+                      <button
+                        onClick={() => scrollTo(link.href)}
+                        className="text-xs text-white/40 hover:text-[#FF00FF] transition-colors"
+                      >
+                        {link.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <p className="font-oswald text-xs tracking-widest text-white/30 uppercase mb-4">Контакты</p>
+                <ul className="space-y-2 text-xs text-white/40">
+                  <li><a href="mailto:info@aiauto2026.ru" className="hover:text-[#FF00FF] transition-colors">info@aiauto2026.ru</a></li>
+                  <li><a href="https://t.me/+QgiLIa1gFRY4Y2Iy" target="_blank" rel="noreferrer" className="hover:text-[#FF00FF] transition-colors">Telegram-канал</a></li>
+                  <li><a href="#" className="hover:text-[#FF00FF] transition-colors">LinkedIn</a></li>
+                </ul>
+              </div>
+
+              <div>
+                <p className="font-oswald text-xs tracking-widest text-white/30 uppercase mb-4">Документы</p>
+                <ul className="space-y-2 text-xs text-white/40">
+                  <li><a href="#" className="hover:text-[#FF00FF] transition-colors">Политика конфиденциальности</a></li>
+                  <li><a href="#" className="hover:text-[#FF00FF] transition-colors">Медиакит для партнёров (PDF)</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom row */}
+          <div
+            className="pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-4"
+            style={{ borderColor: "rgba(157,78,221,0.1)" }}
+          >
+            <p className="text-white/20 text-xs">© 2026 Конференция по ИИ в автобизнесе. Все права защищены.</p>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://t.me/+QgiLIa1gFRY4Y2Iy"
+                target="_blank"
+                rel="noreferrer"
+                className="w-8 h-8 rounded-full border flex items-center justify-center transition-all hover:border-[#FF00FF] hover:scale-110"
+                style={{ borderColor: "rgba(157,78,221,0.3)" }}
               >
-                {link.label}
+                <Icon name="Send" size={14} style={{ color: "#9D4EDD" }} />
+              </a>
+              <a
+                href="#"
+                className="w-8 h-8 rounded-full border flex items-center justify-center transition-all hover:border-[#FF00FF] hover:scale-110"
+                style={{ borderColor: "rgba(157,78,221,0.3)" }}
+              >
+                <Icon name="Linkedin" size={14} style={{ color: "#9D4EDD" }} />
+              </a>
+              <button
+                onClick={() => scrollTo("#tickets")}
+                className="px-5 py-2 font-oswald text-xs font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-105"
+                style={{ background: "linear-gradient(135deg, #9D4EDD, #FF00FF)", boxShadow: "0 0 15px rgba(255,0,255,0.2)" }}
+              >
+                КУПИТЬ БИЛЕТ
               </button>
-            ))}
+            </div>
           </div>
         </div>
       </footer>
