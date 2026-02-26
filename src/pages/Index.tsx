@@ -1825,14 +1825,18 @@ export default function Index() {
                   <p className="text-white/40 text-xs mb-3 uppercase tracking-widest">Организатор</p>
                   <div className="flex items-center gap-4">
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center"
-                      style={{ background: "rgba(157,78,221,0.1)", border: "1px solid rgba(157,78,221,0.3)" }}
+                      className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0"
+                      style={{ border: "1px solid rgba(157,78,221,0.4)", boxShadow: "0 0 20px rgba(157,78,221,0.2)" }}
                     >
-                      <Icon name="Building2" size={24} style={{ color: "#9D4EDD" }} />
+                      <img
+                        src="https://cdn.poehali.dev/projects/d4af42ec-5015-483c-b71c-6bf32723c131/bucket/89cbe04c-606a-4f61-b2b5-f181b33d8fa6.png"
+                        alt="Auto Business Consulting"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <div>
-                      <p className="font-oswald text-lg font-bold">[Название агентства]</p>
-                      <a href="#" className="text-[#9D4EDD] text-sm hover:text-[#FF00FF] transition-colors">Перейти на сайт →</a>
+                      <p className="font-oswald text-lg font-bold">Auto Business Consulting</p>
+                      <a href="https://a-b-c.su/" target="_blank" rel="noreferrer" className="text-[#9D4EDD] text-sm hover:text-[#FF00FF] transition-colors">Перейти на сайт →</a>
                     </div>
                   </div>
                 </div>
@@ -1960,12 +1964,16 @@ export default function Index() {
               {/* Organizer logo */}
               <div className="mt-4 flex items-center gap-3">
                 <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center"
-                  style={{ background: "rgba(157,78,221,0.15)", border: "1px solid rgba(157,78,221,0.3)" }}
+                  className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0"
+                  style={{ border: "1px solid rgba(157,78,221,0.3)" }}
                 >
-                  <Icon name="Building2" size={14} style={{ color: "#9D4EDD" }} />
+                  <img
+                    src="https://cdn.poehali.dev/projects/d4af42ec-5015-483c-b71c-6bf32723c131/bucket/89cbe04c-606a-4f61-b2b5-f181b33d8fa6.png"
+                    alt="ABC"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <span className="text-white/30 text-xs">[Название агентства]</span>
+                <span className="text-white/30 text-xs">Auto Business Consulting</span>
               </div>
             </div>
 
