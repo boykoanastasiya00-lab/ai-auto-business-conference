@@ -1723,8 +1723,8 @@ export default function Index() {
               <p className="text-white/50 mb-6 text-sm">Оставьте контакты — ответим в течение 24 часов</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-white/50 mb-6">
                 <span>Контакт для партнёров: <span className="text-[#9D4EDD]">[Имя]</span></span>
-                <span>Телефон: <span className="text-[#9D4EDD]">[номер]</span></span>
-                <span>Email: <a href="mailto:partners@aiauto2026.ru" className="text-[#9D4EDD] hover:text-[#FF00FF] transition-colors">partners@aiauto2026.ru</a></span>
+                <span>Телефон: <a href="tel:+79852320005" className="text-[#9D4EDD] hover:text-[#FF00FF] transition-colors">+7 985 232-00-05</a></span>
+                <span>Email: <a href="mailto:Inna.Petuhova@autobisconsult.ru" className="text-[#9D4EDD] hover:text-[#FF00FF] transition-colors">Inna.Petuhova@autobisconsult.ru</a></span>
               </div>
 
               {partnerSent ? (
@@ -1793,10 +1793,10 @@ export default function Index() {
                 <h3 className="font-oswald text-2xl font-semibold mb-6">Контакты</h3>
 
                 {[
-                  { icon: "Mail", label: "Общие вопросы", value: "info@aiauto2026.ru", href: "mailto:info@aiauto2026.ru" },
-                  { icon: "Mic", label: "Для спикеров", value: "speakers@aiauto2026.ru", href: "mailto:speakers@aiauto2026.ru" },
-                  { icon: "Handshake", label: "Для партнёров", value: "partners@aiauto2026.ru", href: "mailto:partners@aiauto2026.ru" },
-                  { icon: "Phone", label: "Телефон (10:00–19:00)", value: "[номер телефона]", href: "tel:+7" },
+                  { icon: "Mail", label: "Электронная почта", value: "Inna.Petuhova@autobisconsult.ru", href: "mailto:Inna.Petuhova@autobisconsult.ru" },
+                  { icon: "Globe", label: "Сайт", value: "a-b-c.su", href: "https://a-b-c.su/" },
+                  { icon: "Send", label: "Telegram", value: "@abc_cons", href: "https://t.me/abc_cons" },
+                  { icon: "Phone", label: "Телефон (10:00–19:00)", value: "+7 985 232-00-05", href: "tel:+79852320005" },
                 ].map((c) => (
                   <a
                     key={c.label}
@@ -1989,9 +1989,9 @@ export default function Index() {
               <div>
                 <p className="font-oswald text-xs tracking-widest text-white/30 uppercase mb-4">Контакты</p>
                 <ul className="space-y-2 text-xs text-white/40">
-                  <li><a href="mailto:info@aiauto2026.ru" className="hover:text-[#FF00FF] transition-colors">info@aiauto2026.ru</a></li>
-                  <li><a href="https://t.me/+QgiLIa1gFRY4Y2Iy" target="_blank" rel="noreferrer" className="hover:text-[#FF00FF] transition-colors">Telegram-канал</a></li>
-                  <li><a href="#" className="hover:text-[#FF00FF] transition-colors">LinkedIn</a></li>
+                  <li><a href="mailto:Inna.Petuhova@autobisconsult.ru" className="hover:text-[#FF00FF] transition-colors">Inna.Petuhova@autobisconsult.ru</a></li>
+                  <li><a href="https://t.me/abc_cons" target="_blank" rel="noreferrer" className="hover:text-[#FF00FF] transition-colors">Telegram</a></li>
+                  <li><a href="https://a-b-c.su/" target="_blank" rel="noreferrer" className="hover:text-[#FF00FF] transition-colors">a-b-c.su</a></li>
                 </ul>
               </div>
 
@@ -2013,7 +2013,7 @@ export default function Index() {
             <p className="text-white/20 text-xs">© 2026 Конференция по ИИ в автобизнесе. Все права защищены.</p>
             <div className="flex items-center gap-4">
               <a
-                href="https://t.me/+QgiLIa1gFRY4Y2Iy"
+                href="https://t.me/abc_cons"
                 target="_blank"
                 rel="noreferrer"
                 className="w-8 h-8 rounded-full border flex items-center justify-center transition-all hover:border-[#FF00FF] hover:scale-110"
@@ -2022,11 +2022,13 @@ export default function Index() {
                 <Icon name="Send" size={14} style={{ color: "#9D4EDD" }} />
               </a>
               <a
-                href="#"
+                href="https://a-b-c.su/"
+                target="_blank"
+                rel="noreferrer"
                 className="w-8 h-8 rounded-full border flex items-center justify-center transition-all hover:border-[#FF00FF] hover:scale-110"
                 style={{ borderColor: "rgba(157,78,221,0.3)" }}
               >
-                <Icon name="Linkedin" size={14} style={{ color: "#9D4EDD" }} />
+                <Icon name="Globe" size={14} style={{ color: "#9D4EDD" }} />
               </a>
               <button
                 onClick={() => scrollTo("#tickets")}
