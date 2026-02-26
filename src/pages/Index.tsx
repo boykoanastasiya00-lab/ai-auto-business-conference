@@ -372,12 +372,183 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
   );
 }
 
+// ── TICKET MODAL ─────────────────────────────────────────────────────────────
+type TicketType = typeof TICKETS[number] | { id: "online"; title: string; price: string; btnLabel: string; btnStyle: string; badge: null; features: string[]; note: null; highlight: boolean };
+
+function TicketModal({ ticket, onClose }: { ticket: TicketType; onClose: () => void }) {
+  const [step, setStep] = useState<"form" | "promo" | "success">("form");
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", company: "", contract: "", promo: "" });
+  const isAbc = ticket.id === "abc";
+  const isWebinar = ticket.id === "webinar";
+
+  // Close on backdrop click
+  const handleBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  // Close on Esc
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handler);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handler);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep("success");
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(10px)" }}
+      onClick={handleBackdrop}
+    >
+      <div
+        className="relative w-full max-w-lg rounded-3xl border p-8 animate-scale-in overflow-y-auto max-h-[90vh]"
+        style={{
+          background: "linear-gradient(135deg, #1A0030, #0D0015)",
+          borderColor: "rgba(157,78,221,0.4)",
+          boxShadow: "0 0 80px rgba(157,78,221,0.2), 0 0 160px rgba(255,0,255,0.05)",
+        }}
+      >
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
+        >
+          <Icon name="X" size={16} style={{ color: "rgba(255,255,255,0.5)" }} />
+        </button>
+
+        {step === "success" ? (
+          <div className="text-center py-8">
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+              style={{ background: "rgba(157,78,221,0.15)", border: "2px solid #9D4EDD" }}
+            >
+              <Icon name="CheckCircle" size={40} style={{ color: "#9D4EDD" }} />
+            </div>
+            <h3 className="font-oswald text-3xl font-bold mb-3">Готово!</h3>
+            <p className="text-white/60 mb-2">Заявка на <span className="text-[#FF00FF]">{ticket.title}</span> принята.</p>
+            <p className="text-white/40 text-sm mb-8">Мы отправим подтверждение на <span className="text-white/60">{formData.email}</span></p>
+            <button
+              onClick={onClose}
+              className="px-8 py-3 font-oswald font-semibold tracking-wider rounded-full"
+              style={{ background: "linear-gradient(135deg, #9D4EDD, #FF00FF)" }}
+            >
+              ОТЛИЧНО!
+            </button>
+          </div>
+        ) : (
+          <>
+            {/* Header */}
+            <div className="mb-7">
+              <span className="text-[#FF00FF] text-xs font-oswald tracking-widest uppercase">Регистрация</span>
+              <h3 className="font-oswald text-2xl font-bold mt-1 mb-1">{ticket.title}</h3>
+              <div className="font-oswald text-3xl font-bold" style={{ color: "#FF00FF" }}>{ticket.price}</div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Common fields */}
+              {[
+                { key: "name", label: "Имя и фамилия *", placeholder: "Иван Петров", required: true },
+                { key: "email", label: "Email *", placeholder: "ivan@company.ru", required: true, type: "email" },
+                { key: "phone", label: "Телефон *", placeholder: "+7 (900) 123-45-67", required: true },
+                { key: "company", label: "Компания / должность", placeholder: "ООО Автоцентр, директор по продажам" },
+              ].map((f) => (
+                <div key={f.key}>
+                  <label className="block text-sm text-white/50 mb-1.5">{f.label}</label>
+                  <input
+                    type={f.type || "text"}
+                    required={f.required}
+                    placeholder={f.placeholder}
+                    value={formData[f.key as keyof typeof formData]}
+                    onChange={(e) => setFormData({ ...formData, [f.key]: e.target.value })}
+                    className="w-full bg-[#0D0015]/70 border rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition-colors focus:border-[#9D4EDD]"
+                    style={{ borderColor: "rgba(157,78,221,0.25)" }}
+                  />
+                </div>
+              ))}
+
+              {/* ABC contract check */}
+              {isAbc && (
+                <div>
+                  <label className="block text-sm text-white/50 mb-1.5">Номер контракта АВС *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Введите номер контракта"
+                    value={formData.contract}
+                    onChange={(e) => setFormData({ ...formData, contract: e.target.value })}
+                    className="w-full bg-[#0D0015]/70 border rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition-colors focus:border-[#9D4EDD]"
+                    style={{ borderColor: "rgba(157,78,221,0.25)" }}
+                  />
+                  <p className="text-white/30 text-xs mt-1.5">Участие бесплатно для действующих клиентов АВС</p>
+                </div>
+              )}
+
+              {/* Webinar promo */}
+              {isWebinar && (
+                <div>
+                  <label className="block text-sm text-white/50 mb-1.5">Промокод *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="ВЕБИНАР"
+                    value={formData.promo}
+                    onChange={(e) => setFormData({ ...formData, promo: e.target.value.toUpperCase() })}
+                    className="w-full bg-[#0D0015]/70 border rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition-colors focus:border-[#9D4EDD] tracking-widest font-oswald"
+                    style={{ borderColor: "rgba(157,78,221,0.25)" }}
+                  />
+                  <p className="text-white/30 text-xs mt-1.5">Промокод для участников вебинара: <span className="text-[#9D4EDD]">ВЕБИНАР</span></p>
+                </div>
+              )}
+
+              {/* Price reminder */}
+              {ticket.price !== "Бесплатно" && (
+                <div
+                  className="flex items-center justify-between p-4 rounded-xl"
+                  style={{ background: "rgba(157,78,221,0.08)", border: "1px solid rgba(157,78,221,0.2)" }}
+                >
+                  <span className="text-white/50 text-sm">К оплате:</span>
+                  <span className="font-oswald text-xl font-bold text-[#FF00FF]">{ticket.price}</span>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="w-full py-4 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-[1.02] mt-2"
+                style={{
+                  background: "linear-gradient(135deg, #9D4EDD, #FF00FF)",
+                  boxShadow: "0 0 30px rgba(255,0,255,0.25)",
+                }}
+              >
+                {isAbc ? "ПОЛУЧИТЬ БЕСПЛАТНЫЙ БИЛЕТ" : "ПЕРЕЙТИ К ОПЛАТЕ"}
+              </button>
+
+              <p className="text-center text-white/25 text-xs">
+                Нажимая кнопку, вы соглашаетесь с{" "}
+                <a href="#" className="text-white/40 hover:text-[#FF00FF] transition-colors underline">политикой конфиденциальности</a>
+              </p>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ── MAIN COMPONENT ────────────────────────────────────────────────────────────
 export default function Index() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTrack, setActiveTrack] = useState("all");
   const [activeSpeaker, setActiveSpeaker] = useState<number | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [activeTicket, setActiveTicket] = useState<TicketType | null>(null);
   const [speakerFormData, setSpeakerFormData] = useState({ name: "", company: "", role: "", topic: "", description: "", link: "", email: "" });
   const [partnerFormData, setPartnerFormData] = useState({ company: "", name: "", role: "", package: "", email: "", phone: "" });
   const [contactFormData, setContactFormData] = useState({ name: "", email: "", subject: "", message: "" });
@@ -413,6 +584,11 @@ export default function Index() {
 
   return (
     <div className="font-golos bg-[#0D0015] text-white min-h-screen">
+
+      {/* ── TICKET MODAL ── */}
+      {activeTicket && (
+        <TicketModal ticket={activeTicket} onClose={() => setActiveTicket(null)} />
+      )}
 
       {/* ── NAV ── */}
       <nav
@@ -897,6 +1073,7 @@ export default function Index() {
                   )}
 
                   <button
+                    onClick={() => setActiveTicket(ticket)}
                     className="w-full py-3 font-oswald text-sm font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-105"
                     style={{
                       background: ticket.btnStyle === "neon"
@@ -926,6 +1103,17 @@ export default function Index() {
                   <p className="text-white/40 text-xs mt-1">Доступ ко всем сессиям онлайн</p>
                 </div>
                 <button
+                  onClick={() => setActiveTicket({
+                    id: "online",
+                    title: "Онлайн-участие (трансляция)",
+                    price: "5 000 ₽",
+                    badge: null,
+                    features: ["Доступ ко всем сессиям онлайн", "Запись конференции", "Презентации спикеров"],
+                    btnLabel: "Купить",
+                    btnStyle: "violet",
+                    note: null,
+                    highlight: false,
+                  })}
                   className="ml-auto px-5 py-2 rounded-full text-sm font-oswald font-semibold border border-[#9D4EDD]/40 hover:bg-[#9D4EDD]/10 transition-colors whitespace-nowrap"
                 >
                   Купить
