@@ -1721,10 +1721,19 @@ export default function Index() {
             <div className="rounded-2xl border p-8" style={{ background: "rgba(45,0,75,0.2)", borderColor: "rgba(157,78,221,0.2)" }}>
               <h3 className="font-oswald text-2xl font-bold mb-1">Заявка на партнёрство</h3>
               <p className="text-white/50 mb-6 text-sm">Оставьте контакты — ответим в течение 24 часов</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-white/50 mb-6">
-                <span>Контакт для партнёров: <span className="text-[#9D4EDD]">[Имя]</span></span>
-                <span>Телефон: <a href="tel:+79852320005" className="text-[#9D4EDD] hover:text-[#FF00FF] transition-colors">+7 985 232-00-05</a></span>
-                <span>Email: <a href="mailto:Inna.Petuhova@autobisconsult.ru" className="text-[#9D4EDD] hover:text-[#FF00FF] transition-colors">Inna.Petuhova@autobisconsult.ru</a></span>
+              <div className="flex items-center gap-4 mb-6 p-4 rounded-xl" style={{ background: "rgba(157,78,221,0.08)", border: "1px solid rgba(157,78,221,0.2)" }}>
+                <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0" style={{ border: "1px solid rgba(157,78,221,0.4)", boxShadow: "0 0 16px rgba(157,78,221,0.25)" }}>
+                  <img src="https://cdn.poehali.dev/projects/d4af42ec-5015-483c-b71c-6bf32723c131/bucket/3c31a22f-e25a-4095-b52f-743990fba8f0.png" alt="Инна Петухова" className="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <p className="font-oswald text-base font-bold">Инна Петухова</p>
+                  <p className="text-white/40 text-xs mb-1">Генеральный директор ABC</p>
+                  <div className="flex flex-wrap gap-3 text-xs text-white/50">
+                    <a href="tel:+79852320005" className="text-[#9D4EDD] hover:text-[#FF00FF] transition-colors">+7 985 232-00-05</a>
+                    <span>·</span>
+                    <a href="mailto:Inna.Petuhova@autobisconsult.ru" className="text-[#9D4EDD] hover:text-[#FF00FF] transition-colors">Inna.Petuhova@autobisconsult.ru</a>
+                  </div>
+                </div>
               </div>
 
               {partnerSent ? (
@@ -1822,21 +1831,23 @@ export default function Index() {
                   className="mt-8 p-6 rounded-xl border"
                   style={{ background: "rgba(45,0,75,0.2)", borderColor: "rgba(157,78,221,0.15)" }}
                 >
-                  <p className="text-white/40 text-xs mb-3 uppercase tracking-widest">Организатор</p>
-                  <div className="flex items-center gap-4">
-                    <div
-                      className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0"
-                      style={{ border: "1px solid rgba(157,78,221,0.4)", boxShadow: "0 0 20px rgba(157,78,221,0.2)" }}
-                    >
-                      <img
-                        src="https://cdn.poehali.dev/projects/d4af42ec-5015-483c-b71c-6bf32723c131/bucket/89cbe04c-606a-4f61-b2b5-f181b33d8fa6.png"
-                        alt="Auto Business Consulting"
-                        className="w-full h-full object-cover"
-                      />
+                  <p className="text-white/40 text-xs mb-4 uppercase tracking-widest">Организатор</p>
+                  <div className="flex items-center gap-4 mb-5">
+                    <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0" style={{ border: "1px solid rgba(157,78,221,0.4)", boxShadow: "0 0 20px rgba(157,78,221,0.2)" }}>
+                      <img src="https://cdn.poehali.dev/projects/d4af42ec-5015-483c-b71c-6bf32723c131/bucket/89cbe04c-606a-4f61-b2b5-f181b33d8fa6.png" alt="Auto Business Consulting" className="w-full h-full object-cover" />
                     </div>
                     <div>
                       <p className="font-oswald text-lg font-bold">Auto Business Consulting</p>
                       <a href="https://a-b-c.su/" target="_blank" rel="noreferrer" className="text-[#9D4EDD] text-sm hover:text-[#FF00FF] transition-colors">Перейти на сайт →</a>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 pt-4 border-t" style={{ borderColor: "rgba(157,78,221,0.15)" }}>
+                    <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0" style={{ border: "1px solid rgba(157,78,221,0.35)", boxShadow: "0 0 12px rgba(157,78,221,0.2)" }}>
+                      <img src="https://cdn.poehali.dev/projects/d4af42ec-5015-483c-b71c-6bf32723c131/bucket/3c31a22f-e25a-4095-b52f-743990fba8f0.png" alt="Инна Петухова" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <p className="font-oswald text-sm font-bold">Инна Петухова</p>
+                      <p className="text-white/40 text-xs">Генеральный директор ABC</p>
                     </div>
                   </div>
                 </div>
