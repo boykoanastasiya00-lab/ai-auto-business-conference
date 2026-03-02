@@ -17,15 +17,16 @@ CORS_HEADERS = {
 }
 
 
-def send_mail(subject: str, html: str):
+def send_mail(subject: str, html: str, to: str = None):
+    recipient = to or TO_EMAIL
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"] = SMTP_USER
-    msg["To"] = TO_EMAIL
+    msg["To"] = recipient
     msg.attach(MIMEText(html, "html", "utf-8"))
     with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
         server.login(SMTP_USER, SMTP_PASSWORD)
-        server.sendmail(SMTP_USER, TO_EMAIL, msg.as_string())
+        server.sendmail(SMTP_USER, recipient, msg.as_string())
 
 
 def handler(event: dict, context) -> dict:
@@ -93,6 +94,31 @@ def handler(event: dict, context) -> dict:
           <tr><td><b>Промокод:</b></td><td>{body.get('promo','')}</td></tr>
         </table>
         """
+        send_mail(subject, html)
+        participant_email = body.get('billingEmail', '')
+        if participant_email:
+            confirm_html = f"""
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+          <div style="background:linear-gradient(135deg,#9D4EDD,#FF00FF);padding:32px;text-align:center;border-radius:12px 12px 0 0">
+            <h1 style="color:#fff;margin:0;font-size:28px;letter-spacing:2px">AI АВТО 2026</h1>
+            <p style="color:rgba(255,255,255,0.8);margin:8px 0 0">Москва · 26 июня 2026</p>
+          </div>
+          <div style="background:#16213E;padding:32px;border-radius:0 0 12px 12px">
+            <h2 style="color:#fff;margin:0 0 16px">Ваша заявка принята!</h2>
+            <p style="color:rgba(255,255,255,0.7)">Здравствуйте, <b style="color:#fff">{body.get('fullName','')}</b>!</p>
+            <p style="color:rgba(255,255,255,0.7)">Мы получили вашу заявку на участие в конференции <b style="color:#FF00FF">AI Авто 2026</b>.</p>
+            <div style="background:rgba(157,78,221,0.15);border:1px solid rgba(157,78,221,0.3);border-radius:8px;padding:20px;margin:24px 0">
+              <p style="color:rgba(255,255,255,0.5);margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:1px">Ваш билет</p>
+              <p style="color:#FF00FF;font-size:20px;font-weight:bold;margin:0">{body.get('ticket','')}</p>
+              <p style="color:#9D4EDD;font-size:18px;margin:4px 0 0">{body.get('price','')}</p>
+            </div>
+            <p style="color:rgba(255,255,255,0.7)">В ближайшее время мы свяжемся с вами и вышлем счёт на оплату.</p>
+            <p style="color:rgba(255,255,255,0.5);font-size:13px;margin-top:32px">По вопросам: <a href="mailto:{TO_EMAIL}" style="color:#9D4EDD">{TO_EMAIL}</a></p>
+          </div>
+        </div>
+            """
+            send_mail("Ваша заявка на AI Авто 2026 принята", confirm_html, to=participant_email)
+        return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"ok": True})}
     else:
         return {"statusCode": 400, "headers": CORS_HEADERS, "body": json.dumps({"error": "unknown type"})}
 
