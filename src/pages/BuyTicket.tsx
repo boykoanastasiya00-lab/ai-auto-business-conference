@@ -5,14 +5,24 @@ import { TICKETS } from "@/data/conferenceData";
 
 const STEPS = ["Билет", "Данные", "Подтверждение"];
 
+const SEATS_OPTIONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11–15", "16–20", "Более 20"];
+
 interface FormData {
-  name: string;
-  email: string;
+  fullName: string;
   phone: string;
+  billingEmail: string;
   company: string;
+  inn: string;
+  kpp: string;
+  legalAddress: string;
+  seats: string;
   contract: string;
   promo: string;
 }
+
+const INPUT_CLS = "w-full rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 outline-none border transition-colors focus:border-[#9D4EDD]";
+const INPUT_STYLE = { background: "rgba(255,255,255,0.04)", borderColor: "rgba(157,78,221,0.2)" };
+const LABEL_CLS = "block text-xs text-white/40 mb-1.5 font-oswald tracking-wide uppercase";
 
 export default function BuyTicket() {
   const navigate = useNavigate();
@@ -21,15 +31,27 @@ export default function BuyTicket() {
 
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [selectedId, setSelectedId] = useState<string>(initialId);
-  const [form, setForm] = useState<FormData>({ name: "", email: "", phone: "", company: "", contract: "", promo: "" });
+  const [form, setForm] = useState<FormData>({
+    fullName: "",
+    phone: "",
+    billingEmail: "",
+    company: "",
+    inn: "",
+    kpp: "",
+    legalAddress: "",
+    seats: "1",
+    contract: "",
+    promo: "",
+  });
 
   const ticket = TICKETS.find((t) => t.id === selectedId) ?? TICKETS[0];
   const isFree = ticket.price === "Бесплатно";
   const isAbc = ticket.id === "abc";
   const isWebinar = ticket.id === "webinar";
 
-  const set = (key: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm((f) => ({ ...f, [key]: e.target.value }));
+  const setField = (key: keyof FormData) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+      setForm((f) => ({ ...f, [key]: e.target.value }));
 
   return (
     <div className="min-h-screen bg-[#0D0015] text-white font-golos">
@@ -113,20 +135,17 @@ export default function BuyTicket() {
                         {t.badge}
                       </span>
                     )}
-
                     {active && (
                       <div className="absolute top-4 left-4 w-5 h-5 rounded-full flex items-center justify-center" style={{ background: "#FF00FF" }}>
                         <Icon name="Check" size={11} />
                       </div>
                     )}
-
                     <div className={`font-oswald text-base font-semibold mb-1 ${active ? "text-white" : "text-white/70"} ${active ? "pl-7" : ""}`}>
                       {t.title}
                     </div>
                     <div className="font-oswald text-2xl font-bold mb-4" style={{ color: active ? "#FF00FF" : "#9D4EDD" }}>
                       {t.price}
                     </div>
-
                     <ul className="space-y-2">
                       {t.features.map((f) => (
                         <li key={f} className="flex items-start gap-2 text-sm text-white/55">
@@ -135,10 +154,7 @@ export default function BuyTicket() {
                         </li>
                       ))}
                     </ul>
-
-                    {t.note && (
-                      <p className="mt-4 text-xs text-white/30 italic">{t.note}</p>
-                    )}
+                    {t.note && <p className="mt-4 text-xs text-white/30 italic">{t.note}</p>}
                   </button>
                 );
               })}
@@ -156,75 +172,94 @@ export default function BuyTicket() {
           </div>
         )}
 
-        {/* ── STEP 2: данные ── */}
+        {/* ── STEP 2: данные участника ── */}
         {step === 2 && (
           <div>
             <h1 className="font-oswald text-3xl md:text-4xl font-bold mb-2 uppercase">Данные <span style={{ color: "#FF00FF" }}>участника</span></h1>
             <p className="text-white/40 text-sm mb-8">Билет: <span className="text-[#9D4EDD]">{ticket.title}</span> · {ticket.price}</p>
 
-            <form
-              className="space-y-5"
-              onSubmit={(e) => { e.preventDefault(); setStep(3); }}
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {([
-                  { key: "name", label: "Имя и фамилия *", placeholder: "Иван Петров", required: true },
-                  { key: "email", label: "Email *", placeholder: "ivan@company.ru", required: true, type: "email" },
-                  { key: "phone", label: "Телефон *", placeholder: "+7 (900) 123-45-67", required: true },
-                  { key: "company", label: "Компания / должность", placeholder: "ООО Автоцентр, директор по продажам" },
-                ] as { key: keyof FormData; label: string; placeholder: string; required?: boolean; type?: string }[]).map((f) => (
-                  <div key={f.key}>
-                    <label className="block text-xs text-white/40 mb-1.5 font-oswald tracking-wide uppercase">{f.label}</label>
-                    <input
-                      type={f.type || "text"}
-                      required={f.required}
-                      placeholder={f.placeholder}
-                      value={form[f.key]}
-                      onChange={set(f.key)}
-                      className="w-full rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 outline-none border transition-colors focus:border-[#9D4EDD]"
-                      style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(157,78,221,0.2)" }}
-                    />
+            <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); setStep(3); }}>
+
+              {/* Контактные данные */}
+              <div>
+                <p className="font-oswald text-xs tracking-widest text-[#FF00FF] uppercase mb-4">Контактные данные</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label className={LABEL_CLS}>Фамилия Имя *</label>
+                    <input type="text" required placeholder="Петров Иван" value={form.fullName} onChange={setField("fullName")} className={INPUT_CLS} style={INPUT_STYLE} />
                   </div>
-                ))}
+                  <div>
+                    <label className={LABEL_CLS}>Телефон для связи *</label>
+                    <input type="tel" required placeholder="+7 (900) 123-45-67" value={form.phone} onChange={setField("phone")} className={INPUT_CLS} style={INPUT_STYLE} />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className={LABEL_CLS}>Адрес эл. почты для выставления счёта *</label>
+                    <input type="email" required placeholder="buhgalter@company.ru" value={form.billingEmail} onChange={setField("billingEmail")} className={INPUT_CLS} style={INPUT_STYLE} />
+                  </div>
+                </div>
               </div>
 
+              {/* Реквизиты */}
+              <div>
+                <p className="font-oswald text-xs tracking-widest text-[#FF00FF] uppercase mb-4">Реквизиты компании</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="sm:col-span-2">
+                    <label className={LABEL_CLS}>Название компании *</label>
+                    <input type="text" required placeholder="ООО Автоцентр" value={form.company} onChange={setField("company")} className={INPUT_CLS} style={INPUT_STYLE} />
+                  </div>
+                  <div>
+                    <label className={LABEL_CLS}>ИНН *</label>
+                    <input type="text" required placeholder="7700000000" value={form.inn} onChange={setField("inn")} className={INPUT_CLS} style={INPUT_STYLE} />
+                  </div>
+                  <div>
+                    <label className={LABEL_CLS}>КПП</label>
+                    <input type="text" placeholder="770000000" value={form.kpp} onChange={setField("kpp")} className={INPUT_CLS} style={INPUT_STYLE} />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className={LABEL_CLS}>Юридический адрес *</label>
+                    <input type="text" required placeholder="г. Москва, ул. Примерная, д. 1" value={form.legalAddress} onChange={setField("legalAddress")} className={INPUT_CLS} style={INPUT_STYLE} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Количество мест */}
+              <div>
+                <p className="font-oswald text-xs tracking-widest text-[#FF00FF] uppercase mb-4">Участие</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label className={LABEL_CLS}>Количество мест *</label>
+                    <select
+                      required
+                      value={form.seats}
+                      onChange={setField("seats")}
+                      className={INPUT_CLS + " cursor-pointer"}
+                      style={{ ...INPUT_STYLE, appearance: "none" as const }}
+                    >
+                      {SEATS_OPTIONS.map((o) => (
+                        <option key={o} value={o} style={{ background: "#1A0030" }}>{o} {parseInt(o) === 1 ? "место" : "мест"}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Доп. поля по типу билета */}
               {isAbc && (
                 <div>
-                  <label className="block text-xs text-white/40 mb-1.5 font-oswald tracking-wide uppercase">Номер контракта АВС *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Введите номер контракта"
-                    value={form.contract}
-                    onChange={set("contract")}
-                    className="w-full rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 outline-none border transition-colors focus:border-[#9D4EDD]"
-                    style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(157,78,221,0.2)" }}
-                  />
+                  <label className={LABEL_CLS}>Номер контракта АВС *</label>
+                  <input type="text" required placeholder="Введите номер контракта" value={form.contract} onChange={setField("contract")} className={INPUT_CLS} style={INPUT_STYLE} />
                   <p className="text-xs text-white/30 mt-1.5">Указан в вашем договоре с Автобизнес Консалтинг</p>
                 </div>
               )}
-
               {isWebinar && (
                 <div>
-                  <label className="block text-xs text-white/40 mb-1.5 font-oswald tracking-wide uppercase">Промокод *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="ВЕБИНАР"
-                    value={form.promo}
-                    onChange={set("promo")}
-                    className="w-full rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 outline-none border transition-colors focus:border-[#FF00FF] uppercase"
-                    style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(157,78,221,0.2)" }}
-                  />
+                  <label className={LABEL_CLS}>Промокод *</label>
+                  <input type="text" required placeholder="ВЕБИНАР" value={form.promo} onChange={setField("promo")} className={INPUT_CLS + " uppercase"} style={INPUT_STYLE} />
                 </div>
               )}
 
               <div className="flex items-center justify-between pt-4">
-                <button
-                  type="button"
-                  onClick={() => setStep(1)}
-                  className="flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm"
-                >
+                <button type="button" onClick={() => setStep(1)} className="flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm">
                   <Icon name="ArrowLeft" size={14} />
                   Назад
                 </button>
@@ -246,9 +281,8 @@ export default function BuyTicket() {
             <h1 className="font-oswald text-3xl md:text-4xl font-bold mb-2 uppercase">Подтверждение <span style={{ color: "#FF00FF" }}>заявки</span></h1>
             <p className="text-white/40 text-sm mb-8">Проверьте данные перед отправкой</p>
 
-            {/* Итоговая карточка */}
             <div
-              className="rounded-2xl border p-6 mb-8"
+              className="rounded-2xl border p-6 mb-6"
               style={{ background: "linear-gradient(135deg, rgba(157,78,221,0.10), rgba(255,0,255,0.05))", borderColor: "rgba(157,78,221,0.3)" }}
             >
               <div className="flex items-start justify-between gap-4 mb-6 pb-6 border-b border-[#9D4EDD]/15">
@@ -259,31 +293,32 @@ export default function BuyTicket() {
                 <div className="font-oswald text-2xl font-bold shrink-0" style={{ color: "#FF00FF" }}>{ticket.price}</div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-sm">
                 {[
-                  { label: "Имя", value: form.name },
-                  { label: "Email", value: form.email },
+                  { label: "Фамилия Имя", value: form.fullName },
                   { label: "Телефон", value: form.phone },
-                  { label: "Компания", value: form.company || "—" },
+                  { label: "Email для счёта", value: form.billingEmail },
+                  { label: "Компания", value: form.company },
+                  { label: "ИНН", value: form.inn },
+                  { label: "КПП", value: form.kpp || "—" },
+                  { label: "Юридический адрес", value: form.legalAddress },
+                  { label: "Кол-во мест", value: form.seats },
                   ...(isAbc ? [{ label: "Контракт АВС", value: form.contract }] : []),
                   ...(isWebinar ? [{ label: "Промокод", value: form.promo }] : []),
                 ].map((row) => (
                   <div key={row.label}>
                     <span className="text-white/35 text-xs font-oswald tracking-wider uppercase">{row.label}</span>
-                    <div className="text-white mt-0.5">{row.value}</div>
+                    <div className="text-white mt-0.5 break-words">{row.value}</div>
                   </div>
                 ))}
               </div>
 
-              <div
-                className="mt-6 pt-4 border-t border-[#9D4EDD]/15 flex items-center gap-2 text-xs text-white/30"
-              >
+              <div className="mt-6 pt-4 border-t border-[#9D4EDD]/15 flex items-center gap-2 text-xs text-white/30">
                 <Icon name="MapPin" size={12} style={{ color: "#9D4EDD" }} />
                 Москва · 26 июня 2026 · 09:30
               </div>
             </div>
 
-            {/* Включено */}
             <div className="rounded-2xl border p-5 mb-8" style={{ borderColor: "rgba(157,78,221,0.15)", background: "rgba(255,255,255,0.02)" }}>
               <div className="text-xs font-oswald tracking-widest text-white/35 uppercase mb-3">Что входит</div>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -297,10 +332,7 @@ export default function BuyTicket() {
             </div>
 
             <div className="flex items-center justify-between">
-              <button
-                onClick={() => setStep(2)}
-                className="flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm"
-              >
+              <button onClick={() => setStep(2)} className="flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm">
                 <Icon name="ArrowLeft" size={14} />
                 Назад
               </button>
@@ -309,7 +341,7 @@ export default function BuyTicket() {
                 className="px-10 py-3.5 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-[1.03]"
                 style={{ background: "linear-gradient(135deg,#9D4EDD,#FF00FF)", boxShadow: "0 0 30px rgba(255,0,255,0.3)" }}
               >
-                {isFree ? "ПОДТВЕРДИТЬ" : "ОПЛАТИТЬ"} {!isFree && ticket.price}
+                {isFree ? "ПОДТВЕРДИТЬ" : `ОПЛАТИТЬ ${ticket.price}`}
               </button>
             </div>
           </div>
@@ -330,7 +362,7 @@ export default function BuyTicket() {
               Ваша заявка на <span className="text-[#FF00FF]">{ticket.title}</span> принята
             </p>
             <p className="text-white/35 text-sm mb-10">
-              Подтверждение придёт на <span className="text-white/55">{form.email}</span> в течение нескольких минут
+              Счёт и подтверждение придут на <span className="text-white/55">{form.billingEmail}</span> в течение нескольких минут
             </p>
 
             <div
@@ -339,7 +371,7 @@ export default function BuyTicket() {
             >
               <div className="text-xs font-oswald tracking-widest text-white/30 uppercase mb-4">Что дальше</div>
               {[
-                { icon: "Mail", text: "Письмо с билетом на email" },
+                { icon: "Mail", text: "Счёт и письмо с билетом на email" },
                 { icon: "Users", text: "Приглашение в закрытый Telegram-чат участников" },
                 { icon: "MapPin", text: "Адрес площадки и схема проезда — за 3 дня до события" },
               ].map((item) => (
