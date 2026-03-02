@@ -106,7 +106,7 @@ export default function FormsContactsFooter({
             >
               <div className="flex items-center gap-2 mb-6">
                 <Icon name="AlertCircle" size={16} style={{ color: "#FF00FF" }} />
-                <span className="text-[#FF00FF] text-sm">Дедлайн подачи заявок: 1 февраля 2026</span>
+                <span className="text-[#FF00FF] text-sm">Дедлайн подачи заявок: 30 марта 2026</span>
               </div>
 
               {speakerSent ? (
