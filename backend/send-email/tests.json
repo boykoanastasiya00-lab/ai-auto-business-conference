@@ -1,0 +1,22 @@
+{
+  "tests": [
+    {
+      "name": "Speaker form",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "type": "speaker",
+        "name": "Тест Тестов",
+        "company": "Тест Компания",
+        "role": "Директор",
+        "topic": "ИИ в автобизнесе",
+        "link": "https://example.com",
+        "email": "test@example.com",
+        "description": "Описание кейса"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import { NAV_LINKS, PARTNER_PACKAGES } from "@/data/conferenceData";
 import { Reveal } from "./SharedComponents";
+
+const SEND_EMAIL_URL = "https://functions.poehali.dev/18f79911-7ad9-4eaa-aa1a-2fc91d022847";
 
 interface FormsContactsFooterProps {
   speakerFormData: { name: string; company: string; role: string; topic: string; description: string; link: string; email: string };
@@ -35,6 +38,34 @@ export default function FormsContactsFooter({
   scrollTo,
 }: FormsContactsFooterProps) {
   const navigate = useNavigate();
+  const [speakerLoading, setSpeakerLoading] = useState(false);
+  const [partnerLoading, setPartnerLoading] = useState(false);
+  const [contactLoading, setContactLoading] = useState(false);
+
+  const handleSpeakerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSpeakerLoading(true);
+    await fetch(SEND_EMAIL_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "speaker", ...speakerFormData }) });
+    setSpeakerLoading(false);
+    setSpeakerSent(true);
+  };
+
+  const handlePartnerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPartnerLoading(true);
+    await fetch(SEND_EMAIL_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "partner", ...partnerFormData }) });
+    setPartnerLoading(false);
+    setPartnerSent(true);
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setContactLoading(true);
+    await fetch(SEND_EMAIL_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "contact", ...contactFormData }) });
+    setContactLoading(false);
+    setContactSent(true);
+  };
+
   return (
     <>
       {/* ── BLOCK 6: FOR SPEAKERS ── */}
@@ -85,7 +116,7 @@ export default function FormsContactsFooter({
                   <p className="text-white/60">Мы свяжемся с вами в ближайшее время.</p>
                 </div>
               ) : (
-                <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={(e) => { e.preventDefault(); setSpeakerSent(true); }}>
+                <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSpeakerSubmit}>
                   {[
                     { key: "name", label: "Имя и фамилия", placeholder: "Иван Петров" },
                     { key: "company", label: "Компания", placeholder: "Название компании" },
@@ -120,10 +151,11 @@ export default function FormsContactsFooter({
                   <div className="md:col-span-2">
                     <button
                       type="submit"
-                      className="w-full py-4 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-[1.02]"
+                      disabled={speakerLoading}
+                      className="w-full py-4 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-[1.02] disabled:opacity-60"
                       style={{ background: "linear-gradient(135deg, #9D4EDD, #FF00FF)", boxShadow: "0 0 30px rgba(255,0,255,0.2)" }}
                     >
-                      ОТПРАВИТЬ ЗАЯВКУ
+                      {speakerLoading ? "ОТПРАВЛЯЕМ..." : "ОТПРАВИТЬ ЗАЯВКУ"}
                     </button>
                   </div>
                 </form>
@@ -258,7 +290,7 @@ export default function FormsContactsFooter({
               ) : (
                 <form
                   className="grid grid-cols-1 md:grid-cols-3 gap-4"
-                  onSubmit={(e) => { e.preventDefault(); setPartnerSent(true); }}
+                  onSubmit={handlePartnerSubmit}
                 >
                   {[
                     { key: "company", label: "Компания", placeholder: "Название компании" },
@@ -283,10 +315,11 @@ export default function FormsContactsFooter({
                   <div className="md:col-span-3">
                     <button
                       type="submit"
-                      className="px-10 py-4 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-105"
+                      disabled={partnerLoading}
+                      className="px-10 py-4 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-105 disabled:opacity-60"
                       style={{ background: "linear-gradient(135deg, #9D4EDD, #FF00FF)", boxShadow: "0 0 30px rgba(255,0,255,0.2)" }}
                     >
-                      ОТПРАВИТЬ ЗАЯВКУ
+                      {partnerLoading ? "ОТПРАВЛЯЕМ..." : "ОТПРАВИТЬ ЗАЯВКУ"}
                     </button>
                   </div>
                 </form>
@@ -379,7 +412,7 @@ export default function FormsContactsFooter({
                     <p className="text-white/60">Ответим в ближайшее время.</p>
                   </div>
                 ) : (
-                  <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setContactSent(true); }}>
+                  <form className="space-y-4" onSubmit={handleContactSubmit}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm text-white/50 mb-2">Имя</label>
@@ -432,10 +465,11 @@ export default function FormsContactsFooter({
                     </div>
                     <button
                       type="submit"
-                      className="w-full py-4 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-[1.02]"
+                      disabled={contactLoading}
+                      className="w-full py-4 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-[1.02] disabled:opacity-60"
                       style={{ background: "linear-gradient(135deg, #9D4EDD, #FF00FF)", boxShadow: "0 0 30px rgba(255,0,255,0.2)" }}
                     >
-                      ОТПРАВИТЬ
+                      {contactLoading ? "ОТПРАВЛЯЕМ..." : "ОТПРАВИТЬ"}
                     </button>
                   </form>
                 )}
