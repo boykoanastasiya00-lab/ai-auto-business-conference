@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { SPEAKERS, TICKETS, TicketType } from "@/data/conferenceData";
 import { Reveal } from "./SharedComponents";
@@ -8,6 +9,7 @@ interface SpeakersTeamTicketsProps {
 }
 
 export default function SpeakersTeamTickets({ setActiveTicket, scrollTo }: SpeakersTeamTicketsProps) {
+  const navigate = useNavigate();
   return (
     <>
       {/* ── BLOCK 4: SPEAKERS ── */}
@@ -537,7 +539,7 @@ export default function SpeakersTeamTickets({ setActiveTicket, scrollTo }: Speak
                   )}
 
                   <button
-                    onClick={() => setActiveTicket(ticket)}
+                    onClick={() => navigate(`/buy?ticket=${ticket.id}`)}
                     className="w-full py-3 font-oswald text-sm font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-105"
                     style={{
                       background: ticket.btnStyle === "neon"
@@ -567,17 +569,7 @@ export default function SpeakersTeamTickets({ setActiveTicket, scrollTo }: Speak
                   <p className="text-white/40 text-xs mt-1">Доступ ко всем сессиям онлайн</p>
                 </div>
                 <button
-                  onClick={() => setActiveTicket({
-                    id: "online",
-                    title: "Онлайн-участие (трансляция)",
-                    price: "5 000 ₽",
-                    badge: null,
-                    features: ["Доступ ко всем сессиям онлайн", "Запись конференции", "Презентации спикеров"],
-                    btnLabel: "Купить",
-                    btnStyle: "violet",
-                    note: null,
-                    highlight: false,
-                  })}
+                  onClick={() => navigate("/buy?ticket=online")}
                   className="ml-auto px-5 py-2 rounded-full text-sm font-oswald font-semibold border border-[#9D4EDD]/40 hover:bg-[#9D4EDD]/10 transition-colors whitespace-nowrap"
                 >
                   Купить

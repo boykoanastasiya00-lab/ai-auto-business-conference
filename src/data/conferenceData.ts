@@ -155,6 +155,20 @@ export const TICKETS = [
     btnStyle: "violet",
     note: null,
   },
+  {
+    id: "online",
+    title: "Онлайн-участие (трансляция)",
+    price: "5 000 ₽",
+    badge: null,
+    features: [
+      "Доступ ко всем сессиям онлайн",
+      "Запись конференции",
+      "Презентации спикеров",
+    ],
+    btnLabel: "Купить",
+    btnStyle: "violet",
+    note: null,
+  },
 ];
 
 export const PARTNER_PACKAGES = [

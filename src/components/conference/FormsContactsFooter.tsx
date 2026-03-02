@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { NAV_LINKS, PARTNER_PACKAGES } from "@/data/conferenceData";
 import { Reveal } from "./SharedComponents";
@@ -33,6 +34,7 @@ export default function FormsContactsFooter({
   setContactSent,
   scrollTo,
 }: FormsContactsFooterProps) {
+  const navigate = useNavigate();
   return (
     <>
       {/* ── BLOCK 6: FOR SPEAKERS ── */}
@@ -457,7 +459,7 @@ export default function FormsContactsFooter({
               </h3>
               <p className="text-white/50 mb-8">2 апреля 2026 • Москва • 10:00 – 20:00</p>
               <button
-                onClick={() => scrollTo("#tickets")}
+                onClick={() => navigate("/buy")}
                 className="px-12 py-4 font-oswald text-lg font-semibold tracking-wider rounded-full transition-all duration-300 hover:scale-105"
                 style={{
                   background: "linear-gradient(135deg, #9D4EDD, #FF00FF)",
@@ -519,7 +521,7 @@ export default function FormsContactsFooter({
               <div>
                 <p className="font-oswald text-xs tracking-widest text-white/30 uppercase mb-4">Контакты</p>
                 <ul className="space-y-2 text-xs text-white/40">
-                  <li><a href="mailto:Inna.Petuhova@autobisconsult.ru" className="hover:text-[#FF00FF] transition-colors">Inna.Petuhova@autobisconsult.ru</a></li>
+                  <li><a href="mailto:info@autobisconsult.ru" className="hover:text-[#FF00FF] transition-colors">info@autobisconsult.ru</a></li>
                   <li><a href="https://t.me/abc_cons" target="_blank" rel="noreferrer" className="hover:text-[#FF00FF] transition-colors">Telegram</a></li>
                   <li><a href="https://a-b-c.su/" target="_blank" rel="noreferrer" className="hover:text-[#FF00FF] transition-colors">a-b-c.su</a></li>
                 </ul>
@@ -561,7 +563,7 @@ export default function FormsContactsFooter({
                 <Icon name="Globe" size={14} style={{ color: "#9D4EDD" }} />
               </a>
               <button
-                onClick={() => scrollTo("#tickets")}
+                onClick={() => navigate("/buy")}
                 className="px-5 py-2 font-oswald text-xs font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-105"
                 style={{ background: "linear-gradient(135deg, #9D4EDD, #FF00FF)", boxShadow: "0 0 15px rgba(255,0,255,0.2)" }}
               >
