@@ -74,6 +74,25 @@ def handler(event: dict, context) -> dict:
           <tr><td><b>Сообщение:</b></td><td>{body.get('message','')}</td></tr>
         </table>
         """
+    elif form_type == "ticket":
+        subject = f"Новая заявка участника: {body.get('ticket','—')} — AI Автобизнес 2026"
+        html = f"""
+        <h2>Заявка участника на билет</h2>
+        <table cellpadding="8" style="border-collapse:collapse;width:100%">
+          <tr><td><b>Билет:</b></td><td>{body.get('ticket','')}</td></tr>
+          <tr><td><b>Стоимость:</b></td><td>{body.get('price','')}</td></tr>
+          <tr><td><b>Фамилия Имя:</b></td><td>{body.get('fullName','')}</td></tr>
+          <tr><td><b>Телефон:</b></td><td>{body.get('phone','')}</td></tr>
+          <tr><td><b>Email для счёта:</b></td><td>{body.get('billingEmail','')}</td></tr>
+          <tr><td><b>Компания:</b></td><td>{body.get('company','')}</td></tr>
+          <tr><td><b>ИНН:</b></td><td>{body.get('inn','')}</td></tr>
+          <tr><td><b>КПП:</b></td><td>{body.get('kpp','')}</td></tr>
+          <tr><td><b>Юридический адрес:</b></td><td>{body.get('legalAddress','')}</td></tr>
+          <tr><td><b>Кол-во мест:</b></td><td>{body.get('seats','')}</td></tr>
+          <tr><td><b>Контракт ABC:</b></td><td>{body.get('contract','')}</td></tr>
+          <tr><td><b>Промокод:</b></td><td>{body.get('promo','')}</td></tr>
+        </table>
+        """
     else:
         return {"statusCode": 400, "headers": CORS_HEADERS, "body": json.dumps({"error": "unknown type"})}
 

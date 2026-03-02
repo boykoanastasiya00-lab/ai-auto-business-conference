@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { TICKETS } from "@/data/conferenceData";
 
+const SEND_EMAIL_URL = "https://functions.poehali.dev/18f79911-7ad9-4eaa-aa1a-2fc91d022847";
+
 const STEPS = ["Билет", "Данные", "Подтверждение"];
 
 const SEATS_OPTIONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11–15", "16–20", "Более 20"];
@@ -30,6 +32,7 @@ export default function BuyTicket() {
   const initialId = searchParams.get("ticket") || TICKETS[2].id;
 
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [submitting, setSubmitting] = useState(false);
   const [selectedId, setSelectedId] = useState<string>(initialId);
   const [form, setForm] = useState<FormData>({
     fullName: "",
@@ -337,11 +340,21 @@ export default function BuyTicket() {
                 Назад
               </button>
               <button
-                onClick={() => setStep(4)}
-                className="px-10 py-3.5 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-[1.03]"
+                disabled={submitting}
+                onClick={async () => {
+                  setSubmitting(true);
+                  await fetch(SEND_EMAIL_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ type: "ticket", ticket: ticket.title, price: ticket.price, ...form }),
+                  });
+                  setSubmitting(false);
+                  setStep(4);
+                }}
+                className="px-10 py-3.5 font-oswald text-base font-semibold tracking-wider rounded-full transition-all duration-200 hover:scale-[1.03] disabled:opacity-60"
                 style={{ background: "linear-gradient(135deg,#9D4EDD,#FF00FF)", boxShadow: "0 0 30px rgba(255,0,255,0.3)" }}
               >
-                {isFree ? "ПОДТВЕРДИТЬ" : `ОПЛАТИТЬ ${ticket.price}`}
+                {submitting ? "ОТПРАВЛЯЕМ..." : isFree ? "ПОДТВЕРДИТЬ" : `ОПЛАТИТЬ ${ticket.price}`}
               </button>
             </div>
           </div>
