@@ -38,7 +38,7 @@ def handler(event: dict, context) -> dict:
     form_type = body.get("type")
 
     if form_type == "speaker":
-        subject = "Новая заявка спикера — AI Автобизнес 2025"
+        subject = "Новая заявка спикера — AI Автобизнес 2026"
         html = f"""
         <h2>Заявка спикера</h2>
         <table cellpadding="8" style="border-collapse:collapse;width:100%">
@@ -51,8 +51,31 @@ def handler(event: dict, context) -> dict:
           <tr><td><b>Описание:</b></td><td>{body.get('description','')}</td></tr>
         </table>
         """
+        send_mail(subject, html)
+        if body.get('email'):
+            confirm_html = f"""
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+          <div style="background:linear-gradient(135deg,#9D4EDD,#FF00FF);padding:32px;text-align:center;border-radius:12px 12px 0 0">
+            <h1 style="color:#fff;margin:0;font-size:28px;letter-spacing:2px">AI АВТО 2026</h1>
+            <p style="color:rgba(255,255,255,0.8);margin:8px 0 0">Москва · 26 июня 2026</p>
+          </div>
+          <div style="background:#16213E;padding:32px;border-radius:0 0 12px 12px">
+            <h2 style="color:#fff;margin:0 0 16px">Заявка спикера принята!</h2>
+            <p style="color:rgba(255,255,255,0.7)">Здравствуйте, <b style="color:#fff">{body.get('name','')}</b>!</p>
+            <p style="color:rgba(255,255,255,0.7)">Мы получили вашу заявку на выступление на конференции <b style="color:#FF00FF">AI Авто 2026</b>.</p>
+            <div style="background:rgba(157,78,221,0.15);border:1px solid rgba(157,78,221,0.3);border-radius:8px;padding:20px;margin:24px 0">
+              <p style="color:rgba(255,255,255,0.5);margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:1px">Тема выступления</p>
+              <p style="color:#FF00FF;font-size:18px;font-weight:bold;margin:0">{body.get('topic','')}</p>
+            </div>
+            <p style="color:rgba(255,255,255,0.7)">Программный директор рассмотрит вашу заявку и свяжется с вами в ближайшее время.</p>
+            <p style="color:rgba(255,255,255,0.5);font-size:13px;margin-top:32px">По вопросам: <a href="mailto:{TO_EMAIL}" style="color:#9D4EDD">{TO_EMAIL}</a></p>
+          </div>
+        </div>
+            """
+            send_mail("Ваша заявка спикера на AI Авто 2026 принята", confirm_html, to=body.get('email'))
+        return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"ok": True})}
     elif form_type == "partner":
-        subject = "Новая заявка партнёра — AI Автобизнес 2025"
+        subject = "Новая заявка партнёра — AI Автобизнес 2026"
         html = f"""
         <h2>Заявка партнёра</h2>
         <table cellpadding="8" style="border-collapse:collapse;width:100%">
@@ -64,6 +87,29 @@ def handler(event: dict, context) -> dict:
           <tr><td><b>Телефон:</b></td><td>{body.get('phone','')}</td></tr>
         </table>
         """
+        send_mail(subject, html)
+        if body.get('email'):
+            confirm_html = f"""
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+          <div style="background:linear-gradient(135deg,#9D4EDD,#FF00FF);padding:32px;text-align:center;border-radius:12px 12px 0 0">
+            <h1 style="color:#fff;margin:0;font-size:28px;letter-spacing:2px">AI АВТО 2026</h1>
+            <p style="color:rgba(255,255,255,0.8);margin:8px 0 0">Москва · 26 июня 2026</p>
+          </div>
+          <div style="background:#16213E;padding:32px;border-radius:0 0 12px 12px">
+            <h2 style="color:#fff;margin:0 0 16px">Заявка на партнёрство принята!</h2>
+            <p style="color:rgba(255,255,255,0.7)">Здравствуйте, <b style="color:#fff">{body.get('name','')}</b>!</p>
+            <p style="color:rgba(255,255,255,0.7)">Мы получили заявку на партнёрство от компании <b style="color:#FF00FF">{body.get('company','')}</b>.</p>
+            <div style="background:rgba(157,78,221,0.15);border:1px solid rgba(157,78,221,0.3);border-radius:8px;padding:20px;margin:24px 0">
+              <p style="color:rgba(255,255,255,0.5);margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:1px">Выбранный пакет</p>
+              <p style="color:#FF00FF;font-size:18px;font-weight:bold;margin:0">{body.get('package','')}</p>
+            </div>
+            <p style="color:rgba(255,255,255,0.7)">Вышлем медиакит и свяжемся с вами в течение 24 часов.</p>
+            <p style="color:rgba(255,255,255,0.5);font-size:13px;margin-top:32px">По вопросам: <a href="mailto:{TO_EMAIL}" style="color:#9D4EDD">{TO_EMAIL}</a></p>
+          </div>
+        </div>
+            """
+            send_mail("Ваша заявка на партнёрство AI Авто 2026 принята", confirm_html, to=body.get('email'))
+        return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"ok": True})}
     elif form_type == "contact":
         subject = f"Обратная связь: {body.get('subject','—')} — AI Автобизнес 2025"
         html = f"""
