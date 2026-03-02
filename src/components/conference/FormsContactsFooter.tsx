@@ -131,7 +131,7 @@ export default function FormsContactsFooter({
 
               <div className="mt-6 pt-6 border-t border-[#9D4EDD]/10 flex flex-wrap gap-6 text-sm text-white/40">
                 <span>Программный директор:</span>
-                <span><a href="mailto:info@autobisconsult.ru" className="hover:text-[#FF00FF] transition-colors">info@autobisconsult.ru</a></span>
+                <span><a href="mailto:inna.petuhova@autobisconsult.ru" className="hover:text-[#FF00FF] transition-colors">inna.petuhova@autobisconsult.ru</a></span>
                 <a href="https://t.me/+QgiLIa1gFRY4Y2Iy" target="_blank" rel="noreferrer" className="hover:text-[#FF00FF] transition-colors">Telegram</a>
               </div>
             </div>
@@ -244,7 +244,7 @@ export default function FormsContactsFooter({
                   <div className="flex flex-wrap gap-3 text-xs text-white/50">
                     <a href="tel:+79852320005" className="text-[#9D4EDD] hover:text-[#FF00FF] transition-colors">+7 985 232-00-05</a>
                     <span>·</span>
-                    <a href="mailto:info@autobisconsult.ru" className="text-[#9D4EDD] hover:text-[#FF00FF] transition-colors">info@autobisconsult.ru</a>
+                    <a href="mailto:inna.petuhova@autobisconsult.ru" className="text-[#9D4EDD] hover:text-[#FF00FF] transition-colors">inna.petuhova@autobisconsult.ru</a>
                   </div>
                 </div>
               </div>
@@ -315,7 +315,7 @@ export default function FormsContactsFooter({
                 <h3 className="font-oswald text-2xl font-semibold mb-6">Контакты</h3>
 
                 {[
-                  { icon: "Mail", label: "Электронная почта", value: "info@autobisconsult.ru", href: "mailto:info@autobisconsult.ru" },
+                  { icon: "Mail", label: "Электронная почта", value: "inna.petuhova@autobisconsult.ru", href: "mailto:inna.petuhova@autobisconsult.ru" },
                   { icon: "Globe", label: "Сайт", value: "a-b-c.su", href: "https://a-b-c.su/" },
                   { icon: "Send", label: "Telegram", value: "@abc_cons", href: "https://t.me/abc_cons" },
                   { icon: "Phone", label: "Телефон (10:00–19:00)", value: "+7 985 232-00-05", href: "tel:+79852320005" },
@@ -521,7 +521,7 @@ export default function FormsContactsFooter({
               <div>
                 <p className="font-oswald text-xs tracking-widest text-white/30 uppercase mb-4">Контакты</p>
                 <ul className="space-y-2 text-xs text-white/40">
-                  <li><a href="mailto:info@autobisconsult.ru" className="hover:text-[#FF00FF] transition-colors">info@autobisconsult.ru</a></li>
+                  <li><a href="mailto:inna.petuhova@autobisconsult.ru" className="hover:text-[#FF00FF] transition-colors">inna.petuhova@autobisconsult.ru</a></li>
                   <li><a href="https://t.me/abc_cons" target="_blank" rel="noreferrer" className="hover:text-[#FF00FF] transition-colors">Telegram</a></li>
                   <li><a href="https://a-b-c.su/" target="_blank" rel="noreferrer" className="hover:text-[#FF00FF] transition-colors">a-b-c.su</a></li>
                 </ul>
